@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Data Processing Suite</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+/* ===== Animated Background ===== */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(-45deg, #141E30, #243B55, #1f4037, #99f2c8);
+    background-size: 400% 400%;
+    animation: gradientBG 12s ease infinite;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+@keyframes gradientBG {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+}
+
+/* ===== Floating Glow Circles ===== */
+.circle {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.4;
+    animation: float 8s ease-in-out infinite;
+}
+
+.circle1 {
+    width: 300px;
+    height: 300px;
+    background: orange;
+    top: 10%;
+    left: 10%;
+}
+
+.circle2 {
+    width: 350px;
+    height: 350px;
+    background: red;
+    bottom: 10%;
+    right: 10%;
+}
+
+@keyframes float {
+    0%,100% { transform: translateY(0px); }
+    50% { transform: translateY(-30px); }
+}
+
+/* ===== Main Card ===== */
+.container {
+    position: relative;
+    backdrop-filter: blur(20px);
+    background: rgba(255,255,255,0.1);
+    padding: 60px;
+    border-radius: 25px;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.4);
+    text-align: center;
+    color: white;
+    width: 500px;
+}
+
+h1 {
+    margin-bottom: 40px;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+/* ===== Buttons ===== */
+.btn {
+    display: block;
+    margin: 20px auto;
+    padding: 18px;
+    width: 80%;
+    border-radius: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
+    color: white;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Orange Button */
+.btn-orange {
+    background: linear-gradient(90deg, #ff8c00, #ff5e00);
+}
+
+.btn-orange:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(255,140,0,0.6);
+}
+
+/* Red Button */
+.btn-red {
+    background: linear-gradient(90deg, #ff0000, #b30000);
+}
+
+.btn-red:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(255,0,0,0.6);
+}
+
+/* Shine Hover Effect */
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: rgba(255,255,255,0.4);
+    transform: skewX(-25deg);
+    transition: 0.7s;
+}
+
+.btn:hover::before {
+    left: 150%;
+}
+
+.footer {
+    margin-top: 30px;
+    font-size: 13px;
+    opacity: 0.7;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="circle circle1"></div>
+<div class="circle circle2"></div>
+
+<div class="container">
+    <h1>Data Processing Suite</h1>
+
+    <a href="file:///C:/Users/Masoom/Desktop/Comparing%20tool.html" class="btn btn-orange">
+        File Compare Tool
+    </a>
+
+    <a href="file:///C:/Users/Masoom/Desktop/New%20State%20finder.html" class="btn btn-red">
+        ZIP Code State Finder
+    </a>
+
+    <div class="footer">Professional Data Utilities</div>
+</div>
+
+</body>
+</html>

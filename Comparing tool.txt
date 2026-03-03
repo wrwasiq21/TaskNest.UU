@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Advanced File Compare Tool</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+/* Animated Background */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(-45deg, #1e3c72, #2a5298, #0f2027, #203a43);
+    background-size: 400% 400%;
+    animation: gradientMove 12s ease infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+@keyframes gradientMove {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+}
+
+/* Glass Card */
+.container {
+    backdrop-filter: blur(20px);
+    background: rgba(255,255,255,0.1);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+    width: 420px;
+    color: white;
+    text-align: center;
+    transition: transform 0.4s ease;
+}
+
+.container:hover {
+    transform: scale(1.02);
+}
+
+/* Heading */
+h2 {
+    margin-bottom: 30px;
+    letter-spacing: 1px;
+}
+
+/* File Inputs */
+input[type="file"] {
+    margin: 15px 0;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    background: rgba(255,255,255,0.2);
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+input[type="file"]:hover {
+    background: rgba(255,255,255,0.35);
+}
+
+/* Buttons */
+button {
+    margin-top: 15px;
+    padding: 12px;
+    width: 100%;
+    border-radius: 12px;
+    border: none;
+    background: linear-gradient(90deg, #00c6ff, #0072ff);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+}
+
+/* Shine Hover Effect */
+button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: rgba(255,255,255,0.4);
+    transform: skewX(-25deg);
+    transition: 0.6s;
+}
+
+button:hover::before {
+    left: 150%;
+}
+
+/* Progress Bar */
+.progress {
+    margin-top: 20px;
+    height: 8px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 10px;
+    overflow: hidden;
+    display: none;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #00f260, #0575e6);
+    animation: loading 1.2s linear infinite;
+}
+
+@keyframes loading {
+    0% {width: 0%;}
+    50% {width: 70%;}
+    100% {width: 100%;}
+}
+
+.footer {
+    margin-top: 20px;
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>File Compare Tool</h2>
+
+    <input type="file" id="mainFile" accept=".csv,.txt">
+    <input type="file" id="compareFile" accept=".csv,.txt">
+
+    <button onclick="findDuplicates()">Compare Duplicates</button>
+    <button onclick="findUnique()">Compare Unique Numbers</button>
+
+    <div class="progress" id="progress">
+        <div class="progress-bar"></div>
+    </div>
+
+    <div class="footer">Powered by Smart Compare Engine</div>
+	<div class="footer">Designed by Wasiq</div>
+</div>
+
+<script>
+
+let mainData = [];
+let compareData = [];
+
+function readFile(file) {
+    return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            let data = e.target.result
+                .split(/[\s,]+/)
+                .map(x => x.trim())
+                .filter(x => x !== "");
+            resolve(data);
+        };
+        reader.readAsText(file);
+    });
+}
+
+async function loadFiles() {
+    const mainFile = document.getElementById("mainFile").files[0];
+    const compareFile = document.getElementById("compareFile").files[0];
+
+    if (!mainFile || !compareFile) {
+        alert("Please upload both files.");
+        return false;
+    }
+
+    document.getElementById("progress").style.display = "block";
+
+    mainData = await readFile(mainFile);
+    compareData = await readFile(compareFile);
+
+    return true;
+}
+
+function downloadFile(filename, content) {
+    const blob = new Blob([content], { type: "text/plain" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = filename;
+    link.click();
+}
+
+async function findDuplicates() {
+    if (!(await loadFiles())) return;
+
+    const compareSet = new Set(compareData);
+    const duplicates = [...new Set(mainData.filter(x => compareSet.has(x)))];
+
+    setTimeout(() => {
+        document.getElementById("progress").style.display = "none";
+        downloadFile("duplicates.txt", duplicates.join("\n"));
+    }, 1000);
+}
+
+async function findUnique() {
+    if (!(await loadFiles())) return;
+
+    const compareSet = new Set(compareData);
+    const unique = [...new Set(mainData.filter(x => !compareSet.has(x)))];
+
+    setTimeout(() => {
+        document.getElementById("progress").style.display = "none";
+        downloadFile("uniques.txt", unique.join("\n"));
+    }, 1000);
+}
+
+</script>
+
+</body>
+</html>
